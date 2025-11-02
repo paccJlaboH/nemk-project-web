@@ -748,96 +748,147 @@ body {
   height: 18px;
   fill: currentColor;
 }
-/* **Стилі для бургер-меню** */
+
 
 /* 1. Приховуємо чекбокс */
 .menu-toggle {
     display: none;
 }
 
-/* 2. Стилі для іконки бургера */
+/* 2. Контейнер, який ми будемо анімувати */
+.nav-container {
+    /* Спочатку приховуємо на мобільному і фіксуємо */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    /* Напівпрозорий темний фон */
+    background-color: rgba(18, 18, 18, 0.95); 
+    padding-top: 100px; /* Відступ, щоб не перекривати лого та бургер */
+    transition: transform 0.4s ease-out;
+    /* Приховуємо за межами екрана (згори) */
+    transform: translateY(-100%); 
+    z-index: 999; 
+    
+    /* Розташування вмісту по центру */
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* 3. Стилі для елементів всередині відкритого меню */
+.nav-container nav ul {
+    flex-direction: column; /* Пункти меню вертикально */
+    align-items: center;
+    width: 100%;
+    padding: 0;
+}
+
+.nav-container nav ul li {
+    margin: 20px 0;
+}
+
+.nav-container nav ul li a {
+    /* Стилізація посилань */
+    font-size: 24px;
+    font-weight: 500;
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+.nav-container nav ul li a:hover {
+    /* Зелений колір при наведенні, що відповідає лого */
+    color: #4CAF50; 
+}
+
+/* 4. Іконки соцмереж у меню */
+.nav-container .header-icons {
+    display: flex; /* Показуємо іконки */
+    margin-top: 30px;
+}
+.nav-container .header-icons a {
+    margin: 0 15px;
+    /* Додаткова стилізація іконок для мобільного меню */
+    font-size: 20px; 
+    color: #fff;
+}
+
+
+/* 5. Відкриття меню при натисканні на чекбокс */
+#menu-toggle:checked ~ .hamburger-icon + .nav-container {
+    transform: translateY(0); /* Висуваємо меню на екран */
+}
+
+/* 6. Стилі для Іконки Бургера (перетворення на X) */
 .hamburger-icon {
-    display: none; /* Спочатку приховуємо на десктопі */
+    display: flex; /* Спочатку приховуємо, покажемо у @media */
     flex-direction: column;
     justify-content: space-around;
-    width: 30px;
-    height: 25px;
+    width: 35px;
+    height: 30px;
     cursor: pointer;
-    z-index: 1001; /* Поверх усіх елементів */
+    z-index: 1000; /* Поверх усіх елементів */
 }
 
 .hamburger-icon span {
     display: block;
     height: 3px;
     width: 100%;
-    background-color: #fff; /* Білі лінії */
+    background-color: #4CAF50; /* Зелені лінії */
     border-radius: 3px;
     transition: all 0.3s ease-in-out;
 }
 
-/* 3. Стилі для контейнера меню на мобільному (використовуємо .main-nav, якщо ви його додали) */
-@media (max-width: 1024px) { /* Активація на екранах менше 1024px */
+/* 7. Анімація перетворення іконки на 'X' */
+#menu-toggle:checked ~ .hamburger-icon span:nth-child(1) {
+    transform: translateY(13px) rotate(45deg);
+}
+
+#menu-toggle:checked ~ .hamburger-icon span:nth-child(2) {
+    opacity: 0;
+}
+
+#menu-toggle:checked ~ .hamburger-icon span:nth-child(3) {
+    transform: translateY(-13px) rotate(-45deg);
+}
+
+
+
+@media (min-width: 1025px) {
+    /* На десктопі, де меню завжди видно */
+    .hamburger-icon, 
+    .menu-toggle {
+        display: none !important; /* Приховуємо бургер */
+    }
+    
+    .nav-container {
+        /* Скасовуємо мобільні стилі для десктопа */
+        position: static;
+        height: auto;
+        padding-top: 0;
+        transform: none;
+        background-color: transparent;
+        z-index: auto;
+        flex-direction: row;
+    }
+    
     .header-content {
-        /* Дозволяємо лого та бургеру бути по краях */
-        justify-content: space-between; 
-    }
-
-    /* Показуємо іконку бургер-меню */
-    .hamburger-icon {
-        display: flex; 
-        order: 2; /* Розміщуємо після логотипу */
+        /* Відновлюємо десктопний Flexbox для вирівнювання */
+        justify-content: space-between;
     }
     
-    /* Приховуємо десктопне меню та іконки соцмереж */
-    .main-nav,
-    .header-icons {
-        display: none; /* Приховуємо на мобільному спочатку */
+    .nav-container nav ul {
+        flex-direction: row;
     }
+}
 
-    /* 4. Стилі для відкритого меню */
-    .main-nav {
-        /* Фіксуємо меню на весь екран, коли воно відкрите */
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background-color: #121212; /* Темний фон */
-        padding-top: 80px; /* Відступ, щоб не перекривати лого та бургер */
-        transition: transform 0.3s ease-in-out;
-        transform: translateX(100%); /* Приховуємо за межами екрана (справа) */
-        z-index: 1000;
-        display: flex; /* Робимо видимим для коректної анімації */
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-    }
-    
-    .main-nav ul {
-        flex-direction: column; /* Пункти меню вертикально */
-        align-items: center;
-        width: 100%;
-    }
 
-    .main-nav ul li {
-        margin: 20px 0;
-    }
-
-    /* 5. Відкриття меню при натисканні на чекбокс */
-    #menu-toggle:checked ~ .main-nav {
-        transform: translateX(0); /* Висуваємо меню на екран */
-    }
-    
-    /* 6. Анімація перетворення іконки на 'X' */
-    #menu-toggle:checked ~ .hamburger-icon span:nth-child(1) {
-        transform: translateY(11px) rotate(45deg);
-    }
-
-    #menu-toggle:checked ~ .hamburger-icon span:nth-child(2) {
-        opacity: 0;
-    }
-
-    #menu-toggle:checked ~ .hamburger-icon span:nth-child(3) {
-        transform: translateY(-11px) rotate(-45deg);
-    }
+/* Якщо у вас великий відступ зверху,
+   можливо, потрібно скоригувати padding у .header-content 
+*/
+.header-content {
+    /* Переконайтеся, що елементи вирівняні вертикально */
+    align-items: center; 
 }
