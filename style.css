@@ -748,3 +748,96 @@ body {
   height: 18px;
   fill: currentColor;
 }
+/* **Стилі для бургер-меню** */
+
+/* 1. Приховуємо чекбокс */
+.menu-toggle {
+    display: none;
+}
+
+/* 2. Стилі для іконки бургера */
+.hamburger-icon {
+    display: none; /* Спочатку приховуємо на десктопі */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 1001; /* Поверх усіх елементів */
+}
+
+.hamburger-icon span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: #fff; /* Білі лінії */
+    border-radius: 3px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 3. Стилі для контейнера меню на мобільному (використовуємо .main-nav, якщо ви його додали) */
+@media (max-width: 1024px) { /* Активація на екранах менше 1024px */
+    .header-content {
+        /* Дозволяємо лого та бургеру бути по краях */
+        justify-content: space-between; 
+    }
+
+    /* Показуємо іконку бургер-меню */
+    .hamburger-icon {
+        display: flex; 
+        order: 2; /* Розміщуємо після логотипу */
+    }
+    
+    /* Приховуємо десктопне меню та іконки соцмереж */
+    .main-nav,
+    .header-icons {
+        display: none; /* Приховуємо на мобільному спочатку */
+    }
+
+    /* 4. Стилі для відкритого меню */
+    .main-nav {
+        /* Фіксуємо меню на весь екран, коли воно відкрите */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: #121212; /* Темний фон */
+        padding-top: 80px; /* Відступ, щоб не перекривати лого та бургер */
+        transition: transform 0.3s ease-in-out;
+        transform: translateX(100%); /* Приховуємо за межами екрана (справа) */
+        z-index: 1000;
+        display: flex; /* Робимо видимим для коректної анімації */
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    
+    .main-nav ul {
+        flex-direction: column; /* Пункти меню вертикально */
+        align-items: center;
+        width: 100%;
+    }
+
+    .main-nav ul li {
+        margin: 20px 0;
+    }
+
+    /* 5. Відкриття меню при натисканні на чекбокс */
+    #menu-toggle:checked ~ .main-nav {
+        transform: translateX(0); /* Висуваємо меню на екран */
+    }
+    
+    /* 6. Анімація перетворення іконки на 'X' */
+    #menu-toggle:checked ~ .hamburger-icon span:nth-child(1) {
+        transform: translateY(11px) rotate(45deg);
+    }
+
+    #menu-toggle:checked ~ .hamburger-icon span:nth-child(2) {
+        opacity: 0;
+    }
+
+    #menu-toggle:checked ~ .hamburger-icon span:nth-child(3) {
+        transform: translateY(-11px) rotate(-45deg);
+    }
+}
